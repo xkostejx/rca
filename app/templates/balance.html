@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% set active_page = "balance" %}
+{% block title %}RICE Coffee Agenda - Balance{% endblock %}
+
+{% block head %}
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery.dataTables.css') }}">
+        <script type="text/javascript" language="javascript" src="{{ url_for('static', filename='js/jquery.dataTables.min.js') }}"></script>
+	<script type="text/javascript" language="javascript" src="{{ url_for('static', filename='js/bootstrap-confirmation.min.js') }}"></script>
+	<script>
+		$(document).ready(function() {
+			$('#paylog').DataTable( {
+						"order" : [],
+						"ajax" : "/data/deposit/all",
+						"columns" : [
+                                        		{ "data" : "date" },
+                                        		{ "data" : "user" },
+                                        		{ "data" : "admin" },
+                                        		{ "data" : "amount",
+							  "className": "dt-center",
+                                          		  "render": function(data,type,row,meta) {
+                                                		return data + ",- Kč";
+                                                 		}
+                                                	},
+                                        		{ "data" : "id",
+							  "className": "dt-center",
+							  "render": function ( data, type, row ) {
+                                                        	return "<a href=\"/data/deposit/delete/" + data + "\" class=\"btn btn-default btn-sm\" data-toggle=\"confirmation\" data-placement=\"bottom\" title=\"Jste si jistí?\" data-btn-ok-label=\"Ano\" data-btn-cancel-label=\"Ne\"><span class=\"glyphicon glyphicon-trash\" aria-hidden=\"true\"></span></a>";
+
+                                                 		}
+                                                	}],
+
+						"searching": false,
+						"info": false,
+						"pageLength" : 40,
+						"dom" : "tip",
+						"language": {
+							 "url": "{{ url_for('static', filename='misc/dataTables.czech.lang') }}"
+							},
+						"drawCallback" : function (settings) {
+							$('[data-toggle=confirmation]').confirmation({singleton: true, popout: true});
+							},
+					} );
+
+		} );
+
+
+	</script>
+
+    {{ super() }}
+{% endblock %}
+
+{% block main %}
+	<!--<button class="btn btn-default" data-toggle="confirmation" data-placement="top">Confirmation on right</button>-->
+	<!--<h2 class="page-header">Statistiky kavoveho fondu</h2>-->
+	<div class="panel panel-primary">
+		<div class="panel-heading">Celkové statistiky kávového fondu</div>
+		<div class="panel-body">
+
+			<div class="row placeholders">
+				<div class="col-xs-6 col-sm-4 placeholder">
+					<h1>{{ dbalancesum.coffee_count }}
+					<h4>Uvařené kávy celkem</h4>
+					<span class="text-muted">Data jsou opravdu aktualni;-)</span>
+				</div>
+				<div class="col-xs-6 col-sm-4 placeholder">
+					<h1>{{ dbalancesum.user_count }}
+					<h4>Počet kafařů celkem</h4>
+					<span class="text-muted"></span>
+				</div>
+				<div class="col-xs-6 col-sm-4 placeholder">
+					<h1>{{ dbalancesum.balance }},-</h1>
+					<h4>Stav kávového fondu</h4>
+					<span class="text-muted"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="panel panel-primary">
+    	<div class="panel-heading">Vložení hotovosti na účet</div>
+		<div class="panel-body">
+			  <!--h2 class="sub-header">Vklad na ucet</h2>-->
+			  {% if form.errors %}
+				<div>
+				{% for field, error in form.errors.items() %}
+					{% for e in error %}
+						<p class="alert alert-danger">{{ e }}</p>
+					{% endfor %}
+				{% endfor %}
+				</div>
+			  {% endif %}
+
+			  {% with messages = get_flashed_messages(with_categories=true) %}
+			  {% if messages %}
+				{% for category, message in messages %}
+					{% if category == "error" %}
+						<p class="alert alert-danger">{{ message }}</p>
+					{% else %}
+						<p class="alert alert-success">{{ message }}</p> 
+					{% endif %}
+				{% endfor %}
+			{% endif %}
+			{% endwith %}
+
+			<form class="form-inline" method="POST" action="." accept-charset="UTF-8" role="form">
+			    <div class="form-group">
+				{{ form.name(class="form-control", autofocus="") }}
+				{{ form.amount(class="form-control",placeholder="1000") }}
+			    </div>
+				{{ form.csrf_token }}
+			    <button type="submit" class="btn btn-primary">Vložit</button>
+			</form>	
+		</div>
+	</div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Celkový přehled vkladů</div>
+        <div class="panel-body">
+
+
+         <!-- <h2 class="sub-header">Prehled plateb</h2>-->
+			<div class="table-overall">
+	      		<table id="paylog" class="display" cellspacing="0" width="100%">
+					<thead>
+						<tr>
+							<th>Datum</th>
+							<th>Uživatel</th>
+							<th>Vložil</th>
+							<th>Částka</th>
+							<th>Delete</th>
+						</tr>
+					</thead>
+				</table>    
+       			</div>
+		</div>
+	</div>
+{% endblock %}

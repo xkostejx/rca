@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% set active_page = "personal" %}
+{% block title %}RICE Coffee Agenda - Overview{% endblock %}
+
+{% block head %}
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery.dataTables.css') }}">
+        <script type="text/javascript" language="javascript" src="{{ url_for('static', filename='js/jquery.dataTables.min.js') }}"></script>
+	<script>
+		$(document).ready(function() {
+			$('#orderlog').DataTable( {
+				"ajax": "/data/coffee/user/2",
+				"columns" : [
+					{ "data" : "date" },
+					{ "data" : "price",
+					  "className": "dt-center",
+					  "render": function(data,type,row,meta) {
+               					return data + ",- Kč";
+            					 }
+						}
+					],
+				 "searching": false,
+				 "info": false,
+				 "ordering": false,
+				 "pageLength": 20,
+				 "dom" : "tip",
+ 				 "language": {
+					"url": "{{ url_for('static', filename='misc/dataTables.czech.lang') }}"
+                		},
+			} );
+
+			$('#paylog').DataTable( {
+				"ajax": "/data/deposit/user/2",
+				"columns" : [
+					{ "data" : "date" },
+					{ "data" : "admin" },
+					{ "data" : "amount",
+					  "className": "dt-center",
+					  "render": function(data,type,row,meta) {
+               					return data + ",- Kč";
+            					 }
+						}
+					],
+				 "searching": false,
+				 "info": false,
+				 "ordering": false,
+				 "dom" : "tip",
+				 "language": {
+	                    		 "url": "{{ url_for('static', filename='misc/dataTables.czech.lang') }}"
+                		},
+				
+			} );
+		} );
+	</script>
+
+    {{ super() }}
+{% endblock %}
+
+{% block main %}
+	<div class="panel panel-primary">
+    	<div class="panel-heading">Celkové osobní statistiky</div>
+        <div class="panel-body">
+
+		<!--<h2 class="page-header">Osobni statistiky</h2>-->
+			<div class="row placeholders">
+				<div class="col-xs-6 col-sm-3 placeholder">
+					<h1 id="coffee-today">{{dusersum.sum_today}}</h1>
+					<h4>Dnes uvařené kávy</h4>
+				</div>
+				<div class="col-xs-6 col-sm-3 placeholder">
+					<h1 id="coffee-month">{{dusersum.sum_month}}</h1>
+					<h4>Uvařené kávy v tomto měsíci</h4>
+				</div>
+				<div class="col-xs-6 col-sm-3 placeholder">
+					<h1 id="coffee-summary">{{dusersum.coffee_count}}</h1>
+					<h4>Uvařené kávy celkem</h4>
+				</div>
+
+				<div class="col-xs-6 col-sm-3 placeholder">
+					<h1 id="balance">{{dusersum.balance}},-</h1>
+					<h4>Stav mého kávového účtu</h4>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-6">
+			<div class="panel panel-primary">
+			<div class="panel-heading">Záznamy o uvařené kávě za poslední měsíc</div>
+			<div class="panel-body">
+
+				<!--<h3 class="sub-header">Denicek za posledni mesic</h3>-->
+
+					<div class="table-overall">
+						<table id="orderlog" class="display" cellspacing="0" width="100%">
+							<thead>
+								<tr>
+									<th>Datum a čas</th>
+									<th>Cena za kávu</th>
+								</tr>
+							</thead>
+						</table>    
+					</div>
+				</div>
+			</div>
+
+		</div>
+	
+	        <div class="col-md-6">
+			<div class="panel panel-primary">
+			<div class="panel-heading">Přehled mých vkladů</div>
+				<div class="panel-body">
+			<!--<h2 class="sub-header">Prehled plateb</h2>-->
+
+					<div class="table-overall">
+						<table id="paylog" class="display" cellspacing="0" width="100%">
+							<thead>
+								<tr>
+									<th>Datum</th>
+									<th>Vložil</th>
+									<th>Částka</th>
+								</tr>
+							</thead>
+						</table>    
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

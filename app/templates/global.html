@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% set active_page = "global" %}
+{% block title %}RICE Coffee Agenda - Overview{% endblock %}
+
+{% block head %}
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery.dataTables.css') }}">
+        <script type="text/javascript" language="javascript" src="{{ url_for('static', filename='js/jquery.dataTables.min.js') }}"></script>
+	<script>
+		$(document).ready(function() {
+			$('#example').DataTable( {
+				"order" : [],
+				"ajax": "/data/coffee/user/sum",
+				"columns" : [
+                                        { "data" : "name" },
+					{ "data" : "coffee_last" },
+					{ "data" : "coffee_count",
+					  "className": "dt-center" },
+                                        { "data" : "price_sum",
+					  "className": "dt-center",
+                                          "render": function(data,type,row,meta) {
+                                                return data + ",- Kč";
+                                                 }
+                                                },
+                                        { "data" : "balance",
+					  "className": "dt-center",
+                                          "render": function(data,type,row,meta) {
+                                                return data + ",- Kč";
+                                                 }
+                                                },
+
+					{ "data" : "user_id",
+					  "className": "dt-center",
+					  "render": function ( data, type, row ) {
+                                                        return "<a href=\"/view/search/user/" + data + "\" class=\"btn btn-default btn-sm\"><span class=\"glyphicon glyphicon-eye-open\" aria-hidden=\"true\"></span></a>";
+                                },
+
+                                       } ],
+				"paging": false,
+				"dom" : "ftip",
+				"language": {
+                			"url": "{{ url_for('static', filename='misc/dataTables.czech.lang') }}"
+            				},
+			} );
+		  
+
+		} );
+	</script>
+
+    {{ super() }}
+{% endblock %}
+
+{% block main %}
+    <div class="panel panel-primary">
+        <div class="panel-heading">Celkové statistiky kávového fondu</div>
+        <div class="panel-body">
+
+        <!--<h2 class="page-header">Celkove statistiky</h2>-->
+
+			<div class="row placeholders">
+				<div class="col-xs-6 col-sm-3 placeholder">
+					<h1 id="coffee-today">{{ dglobalsum.coffee_today }}</h1>
+					<h4>Dnes uvařené kávy</h4>
+					<span class="text-muted"></span>
+				</div>
+				<div class="col-xs-6 col-sm-3 placeholder">
+					<h1 id="coffee-month">{{ dglobalsum.coffee_month }}</h1>
+					<h4>Uvařené kávy v tomto měsíci</h4>
+					<span class="text-muted">Kveten</span>
+				</div>
+				<div class="col-xs-6 col-sm-3 placeholder">
+					<h1 id="coffee-summary">{{ dglobalsum.coffee_overall }}</h1>
+					<h4>Uvařené kávy celkem</h4>
+					<span class="text-muted"></span>
+				</div>
+				<div class="col-xs-6 col-sm-3 placeholder">
+					<h1 id="balance">{{ dglobalsum.balance }},-</h1>
+					<h4>Stav kávového fondu</h4>
+					<span class="text-muted"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Celkové statistiky kávového fondu</div>
+        <div class="panel-body">
+          <!--<h3 class="sub-header">Prehled vsech kafaru</h3>-->
+
+			<div class="table-overall">
+				<table id="example" class="display" cellspacing="0" width="100%">
+					<thead>
+						<tr>
+							<th>Uživatel</th>
+							<th>Poslední káva</th>
+							<th>Celkový počet káv</th>
+							<th>Celková cena kávy</th>
+							<th>Stav účtu</th>
+							<th>Detail uživatele</th>
+						</tr>
+					</thead>
+				</table>    
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
