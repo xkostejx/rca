@@ -56,31 +56,36 @@
 {% block main %}
 	<!--<button class="btn btn-default" data-toggle="confirmation" data-placement="top">Confirmation on right</button>-->
 	<!--<h2 class="page-header">Statistiky kavoveho fondu</h2>-->
-	<div class="panel panel-primary">
+	<div class="panel panel-{{paneltheme}}">
 		<div class="panel-heading">Celkové statistiky kávového fondu</div>
 		<div class="panel-body">
 
-			<div class="row placeholders">
-				<div class="col-xs-6 col-sm-4 placeholder">
-					<h1>{{ dbalancesum.coffee_count }}
-					<h4>Uvařené kávy celkem</h4>
-					<span class="text-muted">Data jsou opravdu aktualni;-)</span>
-				</div>
-				<div class="col-xs-6 col-sm-4 placeholder">
-					<h1>{{ dbalancesum.user_count }}
-					<h4>Počet kafařů celkem</h4>
+			<div class="row placeholders2">
+				<div class="col-xs-6 col-sm-3">
+					<h1>{{ dbalancesum.coffee_count }}</h1>
+					<h4><span class="label label-default">Uvařené kávy celkem</span></h4>
 					<span class="text-muted"></span>
 				</div>
-				<div class="col-xs-6 col-sm-4 placeholder">
+				<div class="col-xs-6 col-sm-3">
+					<h1>{{ dbalancesum.user_count }}</h1>
+					<h4><span class="label label-default">Počet kafařů celkem</span></h4>
+					<span class="text-muted"></span>
+				</div>
+				<div class="col-xs-6 col-sm-3">
+					<h1>{{ dbalancesum.user_month_count }}</h1>
+					<h4><span class="label label-default">Počet kafařů tento měsíc</span></h4>
+					<span class="text-muted"></span>
+				</div>
+				<div class="col-xs-6 col-sm-3">
 					<h1>{{ dbalancesum.balance }} Kč</h1>
-					<h4>Stav kávového fondu</h4>
+					<h4><span class="label label-default">Stav kávového fondu</span></h4>
 					<span class="text-muted"></span>
 				</div>
 			</div>
 		</div>
 	</div>
 	
-	<div class="panel panel-primary">
+	<div class="panel panel-{{paneltheme}}">
     	<div class="panel-heading">Vložení hotovosti na účet</div>
 		<div class="panel-body">
 			  <!--h2 class="sub-header">Vklad na ucet</h2>-->
@@ -120,7 +125,7 @@
 		</div>
 	</div>
 
-    <div class="panel panel-primary">
+    <div class="panel panel-{{paneltheme}}">
         <div class="panel-heading">Celkový přehled vkladů</div>
         <div class="panel-body">
 

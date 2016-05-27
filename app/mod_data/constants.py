@@ -5,7 +5,7 @@ class Constants():
  
 	SQL_GLOBAL_SUMMARY = "SELECT ct.coffee_count as coffee_today, cm.coffee_count as coffee_month, co.coffee_count as coffee_overall, (co.price_sum*-1) + do.deposit_sum as balance FROM (SELECT count(id) as coffee_count FROM coffee WHERE DATE(date_created) = CURDATE()) as ct,(SELECT count(id) as coffee_count FROM coffee WHERE DATE_FORMAT(date_created,'%m-%Y') = DATE_FORMAT(NOW(),'%m-%Y')) as cm, (SELECT count(id) as coffee_count, sum(price) as price_sum FROM coffee) as co, (SELECT sum(amount) as deposit_sum FROM deposit) as do"
 
-	SQL_BALANCE_SUMMARY = "SELECT count(c.id) as coffee_count, count(distinct(c.user_id)) as user_count, (co.price_sum*-1) + do.deposit_sum as balance FROM coffee c, (SELECT sum(price) as price_sum FROM coffee) as co, (SELECT sum(amount) as deposit_sum FROM deposit) as do"
+	SQL_BALANCE_SUMMARY = "SELECT count(c.id) as coffee_count, count(distinct(c.user_id)) as user_count, cm.user_month_count, (co.price_sum*-1) + do.deposit_sum as balance FROM coffee c, (SELECT sum(price) as price_sum FROM coffee) as co, (SELECT sum(amount) as deposit_sum FROM deposit) as do, (SELECT count(distinct(user_id)) as user_month_count FROM coffee WHERE DATE_FORMAT(date_created,'%m-%Y') = DATE_FORMAT(NOW(),'%m-%Y')) cm"
 
 	SQL_USERS = "SELECT * FROM users ORDER BY fullname"
 	

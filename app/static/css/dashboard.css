@@ -103,3 +103,22 @@ body {
   display: inline-block;
   border-radius: 50%;
 }
+
+/*
+ * Placeholder2 dashboard ideas
+ */
+
+.placeholders2 {
+  text-align: center;
+  margin-bottom: 10px
+}
+.placeholders2 h4 {
+  margin-bottom: 0;
+}
+.placeholder2 {
+  margin-bottom: 20px;
+}
+.placeholder2 img {
+  display: inline-block;
+  border-radius: 50%;
+}

@@ -1,3 +1,4 @@
+{% set paneltheme = "default" %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -72,16 +73,16 @@
             <li><a href="#">Export</a></li>-->
 	
 	    {% set navigation_bar = [
-		('/view/personal/', 'personal', 'Personal overview'),
-		('/view/global/', 'global', 'Global coffee overview'),
-		('/view/balance/', 'balance', 'Balance overview'),
-		('/view/search/', 'search', 'Search')
+		('/view/personal/', 'personal', 'Osobní přehled', 'eye-open'),
+		('/view/global/', 'global', 'Přehled kávové agendy', 'list-alt'),
+		('/view/balance/', 'balance', 'Stav kávového fondu', 'piggy-bank'),
+		('/view/search/', 'search', 'Statistiky kafařů', 'equalizer')
 		] 
             -%}
 
-	    {% for href, id, caption in navigation_bar %}
+	    {% for href, id, caption, icon in navigation_bar %}
 		 <li{% if id == active_page %} class="active"{% endif
-		  %}><a href="{{ href|e }}">{{ caption|e }}</a></li>
+		  %}><a href="{{ href|e }}"><span class="glyphicon glyphicon-{{icon}}" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;{{ caption|e }}</a></li>
 	    {% endfor %}
 
           </ul>

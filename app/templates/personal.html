@@ -58,28 +58,28 @@
 {% endblock %}
 
 {% block main %}
-	<div class="panel panel-primary">
+	<div class="panel panel-{{paneltheme}}">
     	<div class="panel-heading">Celkové osobní statistiky</div>
         <div class="panel-body">
 
 		<!--<h2 class="page-header">Osobni statistiky</h2>-->
-			<div class="row placeholders">
-				<div class="col-xs-6 col-sm-3 placeholder">
+			<div class="row placeholders2">
+				<div class="col-xs-6 col-sm-3">
 					<h1 id="coffee-today">{{dusersum.sum_today}}</h1>
-					<h4>Dnes uvařené kávy</h4>
+					<h4><span class="label label-default">Dnes uvařené kávy</span></h4>
 				</div>
-				<div class="col-xs-6 col-sm-3 placeholder">
+				<div class="col-xs-6 col-sm-3">
 					<h1 id="coffee-month">{{dusersum.sum_month}}</h1>
-					<h4>Uvařené kávy v tomto měsíci</h4>
+					<h4><span class="label label-default">Uvařené kávy v tomto měsíci</span></h4>
 				</div>
-				<div class="col-xs-6 col-sm-3 placeholder">
+				<div class="col-xs-6 col-sm-3">
 					<h1 id="coffee-summary">{{dusersum.coffee_count}}</h1>
-					<h4>Uvařené kávy celkem</h4>
+					<h4><span class="label label-default">Uvařené kávy celkem</span></h4>
 				</div>
 
-				<div class="col-xs-6 col-sm-3 placeholder">
+				<div class="col-xs-6 col-sm-3">
 					<h1 id="balance">{{dusersum.balance}} Kč</h1>
-					<h4>Stav mého kávového účtu</h4>
+					<h4><span class="label label-default">Stav mého kávového účtu</h4>
 				</div>
 			</div>
 		</div>
@@ -87,7 +87,7 @@
 
 	<div class="row">
 		<div class="col-md-6">
-			<div class="panel panel-primary">
+			<div class="panel panel-{{paneltheme}}">
 			<div class="panel-heading">Záznamy o uvařené kávě za poslední měsíc</div>
 			<div class="panel-body">
 
@@ -109,7 +109,7 @@
 		</div>
 	
 	        <div class="col-md-6">
-			<div class="panel panel-primary">
+			<div class="panel panel-{{paneltheme}}">
 			<div class="panel-heading">Přehled mých vkladů</div>
 				<div class="panel-body">
 			<!--<h2 class="sub-header">Prehled plateb</h2>-->
