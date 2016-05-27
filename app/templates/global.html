@@ -24,13 +24,13 @@
                                         { "data" : "price_sum",
 					  "className": "dt-center",
                                           "render": function(data,type,row,meta) {
-                                                return data + ",- Kč";
+                                                return data + " Kč";
                                                  }
                                                 },
                                         { "data" : "balance",
 					  "className": "dt-center",
                                           "render": function(data,type,row,meta) {
-                                                return data + ",- Kč";
+                                                return data + " Kč";
                                                  }
                                                 },
 
@@ -79,7 +79,7 @@
 					<span class="text-muted"></span>
 				</div>
 				<div class="col-xs-6 col-sm-3 placeholder">
-					<h1 id="balance">{{ dglobalsum.balance }},-</h1>
+					<h1 id="balance">{{ dglobalsum.balance }} Kč</h1>
 					<h4>Stav kávového fondu</h4>
 					<span class="text-muted"></span>
 				</div>

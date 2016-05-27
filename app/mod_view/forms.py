@@ -1,3 +1,5 @@
+# coding: utf-8
+
 # Import Form and RecaptchaField (optional)
 from flask.ext.wtf import Form # , RecaptchaField
 
@@ -19,8 +21,8 @@ class LoginForm(Form):
 class DepositForm(Form):
     name     = SelectField('Name', choices=[])
 
-    amount   = IntegerField('Amount', [NumberRange(min=1, max=10000),
-		Required(message='Forgot amount to deposit')])
+    amount   = IntegerField('Amount', [NumberRange(min=1, max=10000, message=u"Částka musí být v rozmezí %(min)s a %(max)s Kč"),
+		Required(message=u'Musíte vložit nějakou částku')])
 
 class ShowPersonForm(Form):
     name     = SelectField('Name', choices=[])

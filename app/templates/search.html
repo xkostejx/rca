@@ -17,8 +17,9 @@
 					"columns" : [
 						{ "data" : "date" },
 						{ "data" : "price",
+						  "className": "dt-center",
 						  "render": function(data,type,row,meta) {
-							return data + ",- Kč";
+							return data + " Kč";
 							 }
 							}
 						],
@@ -38,8 +39,9 @@
 						{ "data" : "date" },
 						{ "data" : "admin" },
 						{ "data" : "amount",
+						  "className": "dt-center",
 						  "render": function(data,type,row,meta) {
-							return data + ",- Kč";
+							return data + " Kč";
 							 }
 							}
 						],
@@ -86,7 +88,7 @@
 				{% endif %}
 			{% endwith %}
 
-			<form class="form-inline" method="POST" action="." accept-charset="UTF-8" role="form">
+			<form class="form-inline" method="POST" action="/view/search/" accept-charset="UTF-8" role="form">
 				<div class="form-group">
 					{{ form.name(class="form-control", autofocus="") }}
 				</div>
@@ -128,11 +130,11 @@
 				  </tr>
 				  <tr>
 					<th>Celková cena kávy</th>
-					<td>{{dusersum.price_sum}},- Kč</td>
+					<td>{{dusersum.price_sum}} Kč</td>
 				  </tr>
 				  <tr>
 					<th>Stav kávového účtu</th>
-					<td>{{dusersum.balance}},- Kč</td>
+					<td>{{dusersum.balance}} Kč</td>
 				  </tr>
 			   </table>
 			   </div>

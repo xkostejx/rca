@@ -8,13 +8,13 @@
 	<script>
 		$(document).ready(function() {
 			$('#orderlog').DataTable( {
-				"ajax": "/data/coffee/user/2",
+				"ajax": "/data/coffee/user/{{userid}}",
 				"columns" : [
 					{ "data" : "date" },
 					{ "data" : "price",
 					  "className": "dt-center",
 					  "render": function(data,type,row,meta) {
-               					return data + ",- Kč";
+               					return data + " Kč";
             					 }
 						}
 					],
@@ -30,14 +30,14 @@
 			} );
 
 			$('#paylog').DataTable( {
-				"ajax": "/data/deposit/user/2",
+				"ajax": "/data/deposit/user/{{userid}}",
 				"columns" : [
 					{ "data" : "date" },
 					{ "data" : "admin" },
 					{ "data" : "amount",
 					  "className": "dt-center",
 					  "render": function(data,type,row,meta) {
-               					return data + ",- Kč";
+               					return data + " Kč";
             					 }
 						}
 					],
@@ -78,7 +78,7 @@
 				</div>
 
 				<div class="col-xs-6 col-sm-3 placeholder">
-					<h1 id="balance">{{dusersum.balance}},-</h1>
+					<h1 id="balance">{{dusersum.balance}} Kč</h1>
 					<h4>Stav mého kávového účtu</h4>
 				</div>
 			</div>

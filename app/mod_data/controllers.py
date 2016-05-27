@@ -32,9 +32,16 @@ def getdeposit(userid):
 
 @mod_data.route('/deposit/all', methods=['GET', 'POST'])
 def getalldeposit():
-	data = db.session.query(Deposit).order_by("date_created DESC").all()
+	data = db.session.query(Deposit).order_by(desc("date_created")).all()
 	out = [d.to_dict() for d in data]
 	return json.dumps({"data" : out} )
+
+@mod_data.route('/deposit/delete/<depositid>', methods=['GET', 'POST'])
+def deleteDeposit(depositid):
+	Deposit.query.filter_by(id=depositid).delete()
+	db.session.commit()
+	return redirect(url_for('view.balance'))
+
 
 @mod_data.route('/coffee/user/<userid>', methods=['GET', 'POST'])
 def getcoffee(userid):
@@ -81,3 +88,8 @@ def getUsersDict(surnamefirst=False):
 		
 	out = [dict(d) for d in data]
 	return out
+
+def insertDeposit(userid, adminid, amount):
+	db.session.add(Deposit(userid, adminid, amount))
+	db.session.commit()
+

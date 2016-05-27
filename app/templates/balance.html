@@ -7,6 +7,8 @@
         <script type="text/javascript" language="javascript" src="{{ url_for('static', filename='js/jquery.dataTables.min.js') }}"></script>
 	<script type="text/javascript" language="javascript" src="{{ url_for('static', filename='js/bootstrap-confirmation.min.js') }}"></script>
 	<script>
+		
+
 		$(document).ready(function() {
 			$('#paylog').DataTable( {
 						"order" : [],
@@ -18,7 +20,7 @@
                                         		{ "data" : "amount",
 							  "className": "dt-center",
                                           		  "render": function(data,type,row,meta) {
-                                                		return data + ",- Kč";
+                                                		return data + " Kč";
                                                  		}
                                                 	},
                                         		{ "data" : "id",
@@ -37,7 +39,9 @@
 							 "url": "{{ url_for('static', filename='misc/dataTables.czech.lang') }}"
 							},
 						"drawCallback" : function (settings) {
-							$('[data-toggle=confirmation]').confirmation({singleton: true, popout: true});
+								$('[data-toggle=confirmation]').confirmation({	singleton: true, 
+														popout: true,
+													     })
 							},
 					} );
 
@@ -68,7 +72,7 @@
 					<span class="text-muted"></span>
 				</div>
 				<div class="col-xs-6 col-sm-4 placeholder">
-					<h1>{{ dbalancesum.balance }},-</h1>
+					<h1>{{ dbalancesum.balance }} Kč</h1>
 					<h4>Stav kávového fondu</h4>
 					<span class="text-muted"></span>
 				</div>
@@ -105,7 +109,10 @@
 			<form class="form-inline" method="POST" action="." accept-charset="UTF-8" role="form">
 			    <div class="form-group">
 				{{ form.name(class="form-control", autofocus="") }}
-				{{ form.amount(class="form-control",placeholder="1000") }}
+				<div class="input-group">
+					{{ form.amount(class="form-control",placeholder="1000") }}
+					<span class="input-group-addon">Kč</span>
+				</div>
 			    </div>
 				{{ form.csrf_token }}
 			    <button type="submit" class="btn btn-primary">Vložit</button>
