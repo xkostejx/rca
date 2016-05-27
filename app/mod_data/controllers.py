@@ -25,21 +25,21 @@ from app.mod_data.jsonencoder import DbEncoder
 @mod_data.route('/deposit/user/<userid>', methods=['GET', 'POST'])
 def getdeposit(userid):
 	data = db.session.query(Deposit).from_statement( \
-		text("SELECT * FROM deposit WHERE user_id=:userid")).params(userid=userid).all()
+		text("SELECT * FROM deposit WHERE user_id=:userid ORDER BY date_created DESC")).params(userid=userid).all()
 	#import pdb; pdb.set_trace()
 	out = [d.to_dict() for d in data]
 	return json.dumps({"data" : out} )
 
 @mod_data.route('/deposit/all', methods=['GET', 'POST'])
 def getalldeposit():
-	data = db.session.query(Deposit).all()
+	data = db.session.query(Deposit).order_by("date_created DESC").all()
 	out = [d.to_dict() for d in data]
 	return json.dumps({"data" : out} )
 
 @mod_data.route('/coffee/user/<userid>', methods=['GET', 'POST'])
 def getcoffee(userid):
 	data = db.session.query(Coffee).from_statement( \
-		text("SELECT * FROM coffee WHERE user_id=:userid")).params(userid=userid).all()
+		text("SELECT * FROM coffee WHERE user_id=:userid ORDER BY date_created DESC")).params(userid=userid).all()
 	out = [d.to_dict() for d in data]
 	return json.dumps({"data" : out} )
 
@@ -52,10 +52,10 @@ def getcoffeesummary():
 
 
 @mod_data.route('/coffee/user/<userid>/sum', methods=['GET', 'POST'])
-def getusersummary(userid,json = True):
+def getusersummary(userid,jsonize = True):
 	data = db.session.execute(text(c.SQL_PERSONAL_SUMMARY).params(userid=userid))
 	out = [dict(d) for d in data]
-	if json:
+	if jsonize:
 		return json.dumps(out, cls = DbEncoder )
 	else:
 		return out

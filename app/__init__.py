@@ -7,6 +7,14 @@ from flask.ext.sqlalchemy import SQLAlchemy
 # Define the WSGI application object
 app = Flask(__name__)
 
+# Filter to change default datetime format
+@app.template_filter()
+def dateformat(value, format='%d.%m.%Y %H:%M:%S'):
+    return value.strftime(format)
+
+app.jinja_env.filters['dateformat'] = dateformat
+
+
 # Configurations
 app.config.from_object('config')
 

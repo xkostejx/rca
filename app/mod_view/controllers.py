@@ -60,9 +60,10 @@ def search():
         form.name.choices = [(str(u['id']), str(u['fullnamerev'])) for u in users]
 	
 	if form.validate_on_submit():
-		dusersummary = getusersummary(form.name.data, json=False)
-		import pdb; pdb.set_trace()
-		return render_template("search.html", form=form, dusersum=dusersummary[0])
+		userid = form.name.data
+		dusersummary = getusersummary(userid, jsonize=False)
+		#import pdb; pdb.set_trace()
+		return render_template("search.html", form=form, dusersum=dusersummary[0], userid=userid)
 
 	return render_template("search.html", form=form)
 

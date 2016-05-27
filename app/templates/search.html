@@ -7,51 +7,55 @@
         <script type="text/javascript" language="javascript" src="{{ url_for('static', filename='js/jquery.dataTables.min.js') }}"></script>
 
     {{ super() }}
+
+	{% if userid %}
 	    <script>
 		     $(document).ready(function() {
-                        $('#orderlog').DataTable( {
-                                "ajax": "/data/coffee/user/2",
-                                "columns" : [
-                                        { "data" : "date" },
-                                        { "data" : "price",
-                                          "render": function(data,type,row,meta) {
-                                                return data + ",- Kč";
-                                                 }
-                                                }
-                                        ],
-                                 "searching": false,
-                                 "info": false,
-                                 "ordering": false,
-                                 "pageLength": 20,
-                                 "dom" : "tip",
-                                 "language": {
-                         "url": "{{ url_for('static', filename='misc/dataTables.czech.lang') }}"
-                                },
-                        } );
+			if($('#personalstats').length){
+				$('#orderlog').DataTable( {
+					"ajax": "/data/coffee/user/{{userid}}",
+					"columns" : [
+						{ "data" : "date" },
+						{ "data" : "price",
+						  "render": function(data,type,row,meta) {
+							return data + ",- Kč";
+							 }
+							}
+						],
+					 "searching": false,
+					 "info": false,
+					 "ordering": false,
+					 "pageLength": 20,
+					 "dom" : "tip",
+					 "language": {
+				 "url": "{{ url_for('static', filename='misc/dataTables.czech.lang') }}"
+					},
+				} );
 
-                        $('#paylog').DataTable( {
-                                "ajax": "/data/deposit/user/2",
-                                "columns" : [
-                                        { "data" : "date" },
-                                        { "data" : "admin" },
-                                        { "data" : "amount",
-                                          "render": function(data,type,row,meta) {
-                                                return data + ",- Kč";
-                                                 }
-                                                }
-                                        ],
-                                 "searching": false,
-                                 "info": false,
-                                 "ordering": false,
-                                 "dom" : "tip",
-                                 "language": {
-                         "url": "{{ url_for('static', filename='misc/dataTables.czech.lang') }}"
-                                },
-                                
-                        } );
-
+				$('#paylog').DataTable( {
+					"ajax": "/data/deposit/user/{{userid}}",
+					"columns" : [
+						{ "data" : "date" },
+						{ "data" : "admin" },
+						{ "data" : "amount",
+						  "render": function(data,type,row,meta) {
+							return data + ",- Kč";
+							 }
+							}
+						],
+					 "searching": false,
+					 "info": false,
+					 "ordering": false,
+					 "dom" : "tip",
+					 "language": {
+				 "url": "{{ url_for('static', filename='misc/dataTables.czech.lang') }}"
+					},
+					
+				} );
+			  }
                 } );
 	    </script>
+	{% endif %}
 
 {% endblock %}
 
@@ -93,93 +97,91 @@
 	</div>
         
 	{% if dusersum %} 
-	<div class="panel panel-default">
-		<div class="panel-heading">Osobní karta</div>
-		<div class="panel-body">
-	  		{{ dusersum }} 
-	 		<div class="col-md-8">
-			<table class="table table-bordered">
-			  <tr>
-				<th>Jméno</th>
-				<td>{{dusersum.name}}</td>
-			  </tr>
-			  <tr>
-				<th>Počet káv celkem (pořadí)</th>
-				<td>555 (4. místo)</td>
-			  </tr>
-			  <tr>
-				<th>Počet káv tento měsíc</th>
-				<td>20</td>
-			  </tr>
-			  <tr>
-				<th>Počet káv dnes</th>
-				<td>1</td>
-			  </tr>
-			  <tr>
-				<th>První káva</th>
-				<td>{{dusersum.coffee_first}}</td>
-			  </tr>
-			  <tr>
-				<th>Poslední káva</th>
-				<td>4.6.2016</td>
-			  </tr>
-			  <tr>
-				<th>Celková cena kávy</th>
-				<td>2775,-</td>
-			  </tr>
-			  <tr>
-				<th>Stav kávového účtu</th>
-				<td>-520,-</td>
-			  </tr>
-		   </table>
-		   </div>
+		<div id="personalstats" class="panel panel-default">
+			<div class="panel-heading">Osobní karta</div>
+			<div class="panel-body">
+				<div class="col-md-8">
+				<table class="table table-bordered">
+				  <tr>
+					<th>Jméno</th>
+					<td>{{dusersum.name}}</td>
+				  </tr>
+				  <tr>
+					<th>Počet káv celkem (pořadí)</th>
+					<td>{{dusersum.coffee_count}}</td>
+				  </tr>
+				  <tr>
+					<th>Počet káv tento měsíc</th>
+					<td>{{dusersum.sum_month}}</td>
+				  </tr>
+				  <tr>
+					<th>Počet káv dnes</th>
+					<td>{{dusersum.sum_today}}</td>
+				  </tr>
+				  <tr>
+					<th>První káva</th>
+					<td>{{dusersum.coffee_first|dateformat}}</td>
+				  </tr>
+				  <tr>
+					<th>Poslední káva</th>
+					<td>{{dusersum.coffee_last|dateformat}}</td>
+				  </tr>
+				  <tr>
+					<th>Celková cena kávy</th>
+					<td>{{dusersum.price_sum}},- Kč</td>
+				  </tr>
+				  <tr>
+					<th>Stav kávového účtu</th>
+					<td>{{dusersum.balance}},- Kč</td>
+				  </tr>
+			   </table>
+			   </div>
+			</div>
 		</div>
-	</div>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="panel panel-default">
+				<div class="panel-heading">Záznamy o uvařené kávě za poslední měsíc</div>
+				<div class="panel-body">
+
+					<!--<h3 class="sub-header">Denicek za posledni mesic</h3>-->
+
+						<div class="table-overall">
+							<table id="orderlog" class="display" cellspacing="0" width="100%">
+								<thead>
+									<tr>
+										<th>Datum</th>
+										<th>Cena za kávu</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<div class="col-md-6">
+				<div class="panel panel-default">
+				<div class="panel-heading">Přehled vkladů uživatele</div>
+					<div class="panel-body">
+				<!--<h2 class="sub-header">Prehled plateb</h2>-->
+
+						<div class="table-overall">
+							<table id="paylog" class="display" cellspacing="0" width="100%">
+								<thead>
+									<tr>
+										<th>Datum</th>
+										<th>Vložil</th>
+										<th>Částka</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	{% endif %}
-  	<div class="row">
-                <div class="col-md-6">
-                        <div class="panel panel-default">
-                        <div class="panel-heading">Záznamy o uvařené kávě za poslední měsíc</div>
-                        <div class="panel-body">
-
-                                <!--<h3 class="sub-header">Denicek za posledni mesic</h3>-->
-
-                                        <div class="table-overall">
-                                                <table id="orderlog" class="display" cellspacing="0" width="100%">
-                                                        <thead>
-                                                                <tr>
-                                                                        <th>Datum</th>
-                                                                        <th>Cena za kávu</th>
-                                                                </tr>
-                                                        </thead>
-                                                </table>
-                                        </div>
-                                </div>
-                        </div>
-
-                </div>
-
-                <div class="col-md-6">
-                        <div class="panel panel-default">
-                        <div class="panel-heading">Přehled vkladů uživatele</div>
-                                <div class="panel-body">
-                        <!--<h2 class="sub-header">Prehled plateb</h2>-->
-
-                                        <div class="table-overall">
-                                                <table id="paylog" class="display" cellspacing="0" width="100%">
-                                                        <thead>
-                                                                <tr>
-                                                                        <th>Datum</th>
-                                                                        <th>Vložil</th>
-                                                                        <th>Částka</th>
-                                                                </tr>
-                                                        </thead>
-                                                </table>
-                                        </div>
-                                </div>
-                        </div>
-                </div>
-        </div>
-
 
 {% endblock %}

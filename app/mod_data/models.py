@@ -76,7 +76,7 @@ class Deposit(Base):
 	#	return '<Deposit %r>' % (self.amount)
 
 	def to_dict(self):
-		return {'id':self.id, 'date': self.date_created.strftime("%Y-%m-%d %H:%M:%S"), 'user':self.user.fullname, 'admin':self.admin.fullname, 'amount':self.amount}
+		return {'id':self.id, 'date': self.date_created.strftime("%d.%m.%Y %H:%M:%S"), 'user':self.user.fullname, 'admin':self.admin.fullname, 'amount':self.amount}
 
 
 class Coffee(Base):
@@ -99,4 +99,4 @@ class Coffee(Base):
 
 
 	def to_dict(self):
-		return {'id':self.id, 'date': self.date_created.strftime("%Y-%m-%d %H:%M:%S"),'price':self.price}
+		return {'id':self.id, 'date': self.date_created.strftime("%d.%m.%Y %H:%M:%S"), 'user_id':self.user_id, 'price':self.price}
