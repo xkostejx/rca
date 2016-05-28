@@ -78,8 +78,8 @@
 				</div>
 
 				<div class="col-xs-6 col-sm-3">
-					<h1 id="balance">{{dusersum.balance}} Kč</h1>
-					<h4><span class="label label-default">Stav mého kávového účtu</h4>
+					<h1 id="balance">{{dusersum.balance }} Kč</h1>
+					<h4><span class="label label-{{'default' if dusersum.balance|int > 0 else 'danger'}}">Stav mého kávového účtu</h4>
 				</div>
 			</div>
 		</div>

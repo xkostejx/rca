@@ -80,7 +80,7 @@
 				</div>
 				<div class="col-xs-6 col-sm-3">
 					<h1 id="balance">{{ dglobalsum.balance }} Kč</h1>
-					<h4><span class="label label-default">Stav kávového fondu</span></h4>
+					<h4><span class="label label-{{'default' if dglobalsum.balance|int > 0 else 'danger'}}">Stav kávového fondu</span></h4>
 					<span class="text-muted"></span>
 				</div>
 			</div>

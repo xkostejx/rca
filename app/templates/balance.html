@@ -62,23 +62,23 @@
 
 			<div class="row placeholders2">
 				<div class="col-xs-6 col-sm-3">
-					<h1>{{ dbalancesum.coffee_count }}</h1>
-					<h4><span class="label label-default">Uvařené kávy celkem</span></h4>
-					<span class="text-muted"></span>
-				</div>
-				<div class="col-xs-6 col-sm-3">
 					<h1>{{ dbalancesum.user_count }}</h1>
 					<h4><span class="label label-default">Počet kafařů celkem</span></h4>
 					<span class="text-muted"></span>
 				</div>
 				<div class="col-xs-6 col-sm-3">
-					<h1>{{ dbalancesum.user_month_count }}</h1>
-					<h4><span class="label label-default">Počet kafařů tento měsíc</span></h4>
+					<h1>{{ dbalancesum.coffee_count }}</h1>
+					<h4><span class="label label-default">Uvařené kávy celkem</span></h4>
+					<span class="text-muted"></span>
+				</div>
+				<div class="col-xs-6 col-sm-3">
+					<h1>{{ dbalancesum.price_sum }} Kč</h1>
+					<h4><span class="label label-default">Celková cena kávy</span></h4>
 					<span class="text-muted"></span>
 				</div>
 				<div class="col-xs-6 col-sm-3">
 					<h1>{{ dbalancesum.balance }} Kč</h1>
-					<h4><span class="label label-default">Stav kávového fondu</span></h4>
+					<h4><span class="label label-{{'default' if dbalancesum.balance|int > 0 else 'danger'}}">Stav kávového fondu</span></h4>
 					<span class="text-muted"></span>
 				</div>
 			</div>
