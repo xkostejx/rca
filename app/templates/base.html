@@ -53,7 +53,7 @@
         <div id="navbar" class="navbar-collapse collapse navbar-right">
 		<p class="navbar-text">
 			<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-			Lenka Kostěncová | ADMIN
+			{{session.fullname}}{{ ' | ADMIN' if session.role else '' }}
 		</p>	
 
         </div>
@@ -73,16 +73,18 @@
             <li><a href="#">Export</a></li>-->
 	
 	    {% set navigation_bar = [
-		('/view/personal/', 'personal', 'Osobní přehled', 'eye-open'),
-		('/view/global/', 'global', 'Kávová agenda', 'list-alt'),
-		('/view/balance/', 'balance', 'Stav kávového fondu', 'piggy-bank'),
-		('/view/search/', 'search', 'Statistiky kafařů', 'equalizer')
+		(0, '/view/personal/', 'personal', 'Osobní přehled', 'eye-open'),
+		(1, '/view/global/', 'global', 'Kávová agenda', 'list-alt'),
+		(1, '/view/balance/', 'balance', 'Stav kávového fondu', 'piggy-bank'),
+		(1, '/view/search/', 'search', 'Statistiky kafařů', 'equalizer')
 		] 
             -%}
 
-	    {% for href, id, caption, icon in navigation_bar %}
+	    {% for ulevel, href, id, caption, icon in navigation_bar %}
+		{% if ulevel <= session.role %}
 		 <li{% if id == active_page %} class="active"{% endif
 		  %}><a href="{{ href|e }}"><span class="glyphicon glyphicon-{{icon}}" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;{{ caption|e }}</a></li>
+		{% endif %}
 	    {% endfor %}
 
           </ul>
