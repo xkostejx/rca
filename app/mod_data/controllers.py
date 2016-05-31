@@ -21,28 +21,24 @@ mod_data = Blueprint('data', __name__, url_prefix='/data')
 
 import json
 from app import app
-from app.mod_data.jsonencoder import DbEncoder
+from app.mod_data.jsonfactory import DbEncoder, data2json as d2j
 
 @mod_data.route('/deposit/user/<int:userid>', methods=['GET', 'POST'])
-def getdeposit(userid):
+def getDepositByUser(userid):
 	forbiddenNotMeOrAdmin(userid)
 
-	data = db.session.query(Deposit).from_statement( \
-		text("SELECT * FROM deposit WHERE user_id=:userid ORDER BY date_created DESC")).params(userid=userid).all()
-	#import pdb; pdb.set_trace()
-	out = [d.to_dict() for d in data]
-	return json.dumps({"data" : out} )
+	data = db.session.execute(text(c.SQL_USER_DEPOSIT).params(userid=userid))
+	return d2j.fromDB(data)
 
-@mod_data.route('/deposit/all', methods=['GET', 'POST'])
-def getalldeposit():
+@mod_data.route('/deposit/user/all', methods=['GET', 'POST'])
+def getDepositAll():
 	forbiddenNotAdmin()
-
-	data = db.session.query(Deposit).order_by(desc("date_created")).all()
-	out = [d.to_dict() for d in data]
-	return json.dumps({"data" : out} )
+	
+	data = db.session.execute(text(c.SQL_DEPOSIT))
+	return d2j.fromDB(data)
 
 @mod_data.route('/deposit/delete/<int:depositid>', methods=['GET', 'POST'])
-def deleteDeposit(depositid):
+def deleteDepositById(depositid):
 	forbiddenNotAdmin()
 
 	Deposit.query.filter_by(id=depositid).delete()
@@ -51,55 +47,47 @@ def deleteDeposit(depositid):
 
 
 @mod_data.route('/coffee/user/<int:userid>', methods=['GET', 'POST'])
-def getcoffee(userid):
+def getCoffeeByUser(userid):
 	forbiddenNotMeOrAdmin(userid)
-
-	data = db.session.query(Coffee).from_statement( \
-		text("SELECT * FROM coffee WHERE user_id=:userid ORDER BY date_created DESC")).params(userid=userid).all()
-	out = [d.to_dict() for d in data]
-	return json.dumps({"data" : out} )
-
+	data = Coffee.query.filter_by(user_id=userid).order_by(desc("date_created")).limit(100)
+	
+	return d2j.fromDB(data, True)
 
 @mod_data.route('/coffee/user/sum', methods=['GET', 'POST'])
-def getcoffeesummary():
+def getCoffeeSummary():
 	forbiddenNotAdmin()
 
-	data = db.session.execute(text(c.SQL_COFFEE_USERS))
-	out = [dict(d) for d in data]
-	return json.dumps({"data" : out}, cls = DbEncoder )
+	data = db.session.execute(text(c.SQL_COFFEE_SUMMARY))
+	return d2j.fromDB(data)
 
-
-@mod_data.route('/coffee/user/<int:userid>/sum', methods=['GET', 'POST'])
-def getusersummary(userid,jsonize = True):
+@mod_data.route('/coffee/user/sum/<int:userid>', methods=['GET', 'POST'])
+def getUserSummary(userid,jsonize = True):
 	forbiddenNotMeOrAdmin(userid)
 
-	data = db.session.execute(text(c.SQL_PERSONAL_SUMMARY).params(userid=userid))
+	data = db.session.execute(text(c.SQL_USER_SUMMARY).params(userid=userid))
 	out = [dict(d) for d in data]
 	if jsonize:
 		return json.dumps(out, cls = DbEncoder )
 	else:
 		return out
 
-@mod_data.route('/coffee/global/sum', methods=['GET', 'POST'])
-def getglobalsummary():
+@mod_data.route('/coffee/global/stats', methods=['GET', 'POST'])
+def getGlobalStats():
 	forbiddenNotAdmin()
 
-        data = db.session.execute(text(c.SQL_GLOBAL_SUMMARY))
-        out = [dict(d) for d in data]
-        return json.dumps(out, cls = DbEncoder )
+        data = db.session.execute(text(c.SQL_GLOBAL_STATS))
+	return d2j.fromDB(data)
 
-@mod_data.route('/balance/sum', methods=['GET', 'POST'])
-def getbalanceummary():
+@mod_data.route('/coffee/balance/stats', methods=['GET', 'POST'])
+def getBalanceStats():
 	forbiddenNotAdmin()
 
-        data = db.session.execute(text(c.SQL_BALANCE_SUMMARY))
-        out = [dict(d) for d in data]
-        return json.dumps(out, cls = DbEncoder )
-
+        data = db.session.execute(text(c.SQL_BALANCE_STATS))
+	return d2j.fromDB(data)
 
 def getUsersDict(surnamefirst=False):
 	if surnamefirst:
-		data = db.session.execute(text(c.SQL_USERS_BY_SURNAME))
+		data = db.session.execute(text(c.SQL_USERS_REV))
 	else:
 		data = db.session.execute(text(c.SQL_USERS))
 		

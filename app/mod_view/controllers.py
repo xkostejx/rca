@@ -22,8 +22,8 @@ mod_view = Blueprint('view', __name__, url_prefix='/view')
 
 from app import app
 
-from app.mod_data.controllers import    getusersummary, getglobalsummary, \
-					getbalanceummary,getUsersDict, \
+from app.mod_data.controllers import    getUserSummary, getGlobalStats, \
+					getBalanceStats, getUsersDict, \
 					insertDeposit, getUserByUsername, \
 					forbiddenNotAdmin, forbiddenNotMeOrAdmin
 
@@ -55,15 +55,15 @@ def index():
 @mod_view.route('/personal/', methods=['GET', 'POST'])
 def personalstats():
 	userid = session.get('userid')
-	dusersum = json.loads(getusersummary(userid))
+	dusersum = json.loads(getUserSummary(userid))
 	return render_template("personal.html", userid=userid, dusersum=dusersum[0])
 
 
 @mod_view.route('/global/', methods=['GET', 'POST'])
 def globalstats():
 	forbiddenNotAdmin()
-	dglobalsum = json.loads(getglobalsummary())
-	return render_template("global.html", dglobalsum=dglobalsum[0])
+	dglobalstats = json.loads(getGlobalStats()).get('data')
+	return render_template("global.html", dglobalstats=dglobalstats[0])
 
 
 @mod_view.route('/balance/', methods=['GET', 'POST'])
@@ -80,8 +80,8 @@ def balance():
 	        insertDeposit(userid, session['userid'], amount)
 		flash(u"Vklad vložen na kávový učet.")
 	
-	dbalancesum = json.loads(getbalanceummary())
-	return render_template("balance.html", form=form,dbalancesum=dbalancesum[0])
+	dbalancestats = json.loads(getBalanceStats()).get('data')
+	return render_template("balance.html", form=form, dbalancestats=dbalancestats[0])
 
 
 @mod_view.route('/search/', methods=['GET', 'POST'])
@@ -97,9 +97,20 @@ def search(userid = None):
 		if not userid:
 			userid = form.name.data
 		
-		form.name.data = userid
-		dusersummary = getusersummary(userid, jsonize=False)
+		form.name.data = str(userid)
+		dusersummary = getUserSummary(userid, jsonize=False)
 		return render_template("search.html", form=form, dusersum=dusersummary[0], userid=userid)
 
 	return render_template("search.html", form=form)
 
+#@mod_view.route('/settings/', methods=['GET', 'POST'])
+#def settings():
+#	forbiddenNotAdmin()
+#
+#	settings = getSettings()
+#	form = SettingsForm(request.form, obj=settings)
+#	
+#	if form.validate_on_submit():
+#		updateSettings(Settings(form.price.data))
+#		
+#	return render_template("search.html", form=form)

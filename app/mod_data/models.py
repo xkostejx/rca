@@ -3,7 +3,7 @@
 from app import db
 
 from werkzeug import check_password_hash, generate_password_hash
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, column_property
 from sqlalchemy import ForeignKey
 
 class Base(db.Model):
@@ -20,6 +20,12 @@ class User(Base):
 
     # User Name
     username  	= db.Column(db.String(128),  nullable=False, unique=True)
+
+    # Givenname
+    givenname   = db.Column(db.String(128),  nullable=False)
+    
+    # Surname
+    surname   = db.Column(db.String(128),  nullable=False)
 	
     # Real Name
     fullname    = db.Column(db.String(128),  nullable=False)
@@ -39,10 +45,12 @@ class User(Base):
 
 
     # New instance instantiation procedure
-    def __init__(self, id, username, fullname,  email, role = 0, status = 1):
+    def __init__(self, id, username, givenname, surname, fullname,  email, role = 0, status = 1):
 
 	self.id	      = id
         self.username = username
+	self.givenname= givenname
+	self.surname  = surname
         self.fullname = fullname
         self.email    = email.lower()
 	self.role     = role

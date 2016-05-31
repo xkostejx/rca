@@ -65,7 +65,6 @@
 	 <div class="panel panel-{{paneltheme}}">
 		<div class="panel-heading">Hledat uživatele</div>
 		<div class="panel-body">
-			<!--<h2 class="page-header">Zobrazit uzivatele</h2>-->
 			{% if form.errors %}
 				<div>
 				{% for field, error in form.errors.items() %}
@@ -143,11 +142,8 @@
 		<div class="row">
 			<div class="col-md-6">
 				<div class="panel panel-default">
-				<div class="panel-heading">Záznamy o uvařené kávě za poslední měsíc</div>
-				<div class="panel-body">
-
-					<!--<h3 class="sub-header">Denicek za posledni mesic</h3>-->
-
+					<div class="panel-heading">Moje aktivita - 100 posledních káv</div>
+					<div class="panel-body">
 						<div class="table-overall">
 							<table id="orderlog" class="display" cellspacing="0" width="100%">
 								<thead>

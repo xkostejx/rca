@@ -6,18 +6,24 @@
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/jquery.dataTables.css') }}">
         <script type="text/javascript" language="javascript" src="{{ url_for('static', filename='js/jquery.dataTables.min.js') }}"></script>
 	<script type="text/javascript" language="javascript" src="{{ url_for('static', filename='js/bootstrap-confirmation.min.js') }}"></script>
+
+        <script type="text/javascript" language="javascript" src="{{ url_for('static', filename='js/moment.js') }}"></script>
+        <script type="text/javascript" language="javascript" src="{{ url_for('static', filename='js/datetime-moment.js') }}"></script>
+        <script type="text/javascript" language="javascript" src="{{ url_for('static', filename='js/currency.js') }}"></script>
 	<script>
 		
 
 		$(document).ready(function() {
+			$.fn.dataTable.moment('DD.MM.YYYY HH:mm:ss');
 			$('#paylog').DataTable( {
 						"order" : [],
-						"ajax" : "/data/deposit/all",
+						"ajax" : "/data/deposit/user/all",
 						"columns" : [
-                                        		{ "data" : "date" },
+                                        		{ "data" : "date"} ,
                                         		{ "data" : "user" },
                                         		{ "data" : "admin" },
                                         		{ "data" : "amount",
+							  "type" : "currency",
 							  "className": "dt-center",
                                           		  "render": function(data,type,row,meta) {
                                                 		return data + " Kč";
@@ -33,7 +39,7 @@
 
 						"searching": false,
 						"info": false,
-						"pageLength" : 40,
+						"pageLength" : 30,
 						"dom" : "tip",
 						"language": {
 							 "url": "{{ url_for('static', filename='misc/dataTables.czech.lang') }}"
@@ -54,31 +60,29 @@
 {% endblock %}
 
 {% block main %}
-	<!--<button class="btn btn-default" data-toggle="confirmation" data-placement="top">Confirmation on right</button>-->
-	<!--<h2 class="page-header">Statistiky kavoveho fondu</h2>-->
 	<div class="panel panel-{{paneltheme}}">
 		<div class="panel-heading">Celkové statistiky kávového fondu</div>
 		<div class="panel-body">
 
 			<div class="row placeholders2">
 				<div class="col-xs-6 col-sm-3">
-					<h1>{{ dbalancesum.user_count }}</h1>
+					<h1>{{ dbalancestats.user_count }}</h1>
 					<h4><span class="label label-default">Počet kafařů celkem</span></h4>
 					<span class="text-muted"></span>
 				</div>
 				<div class="col-xs-6 col-sm-3">
-					<h1>{{ dbalancesum.coffee_count }}</h1>
+					<h1>{{ dbalancestats.coffee_count }}</h1>
 					<h4><span class="label label-default">Uvařené kávy celkem</span></h4>
 					<span class="text-muted"></span>
 				</div>
 				<div class="col-xs-6 col-sm-3">
-					<h1>{{ dbalancesum.price_sum }} Kč</h1>
+					<h1>{{ dbalancestats.price_sum }} Kč</h1>
 					<h4><span class="label label-default">Celková cena kávy</span></h4>
 					<span class="text-muted"></span>
 				</div>
 				<div class="col-xs-6 col-sm-3">
-					<h1>{{ dbalancesum.balance }} Kč</h1>
-					<h4><span class="label label-{{'default' if dbalancesum.balance|int > 0 else 'danger'}}">Stav kávového fondu</span></h4>
+					<h1>{{ dbalancestats.balance }} Kč</h1>
+					<h4><span class="label label-{{'default' if dbalancestats.balance|int > 0 else 'danger'}}">Stav kávového fondu</span></h4>
 					<span class="text-muted"></span>
 				</div>
 			</div>
@@ -88,7 +92,6 @@
 	<div class="panel panel-{{paneltheme}}">
     	<div class="panel-heading">Vložení hotovosti na účet</div>
 		<div class="panel-body">
-			  <!--h2 class="sub-header">Vklad na ucet</h2>-->
 			  {% if form.errors %}
 				<div>
 				{% for field, error in form.errors.items() %}
@@ -128,9 +131,6 @@
     <div class="panel panel-{{paneltheme}}">
         <div class="panel-heading">Celkový přehled vkladů</div>
         <div class="panel-body">
-
-
-         <!-- <h2 class="sub-header">Prehled plateb</h2>-->
 			<div class="table-overall">
 	      		<table id="paylog" class="display" cellspacing="0" width="100%">
 					<thead>
