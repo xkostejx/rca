@@ -16,6 +16,7 @@ from app import db
 from app.mod_view.forms import LoginForm
 from app.mod_view.forms import DepositForm
 from app.mod_view.forms import ShowPersonForm
+from app.mod_view.forms import SettingsForm
 
 # Define the blueprint: 'view', set its url prefix: app.url/view
 mod_view = Blueprint('view', __name__, url_prefix='/view')
@@ -25,7 +26,8 @@ from app import app
 from app.mod_data.controllers import    getUserSummary, getGlobalStats, \
 					getBalanceStats, getUsersDict, \
 					insertDeposit, getUserByUsername, \
-					forbiddenNotAdmin, forbiddenNotMeOrAdmin
+					forbiddenNotAdmin, forbiddenNotMeOrAdmin, \
+					updateSettings, getSettings
 
 from app.mod_data.constants import Constants as c
 
@@ -103,14 +105,18 @@ def search(userid = None):
 
 	return render_template("search.html", form=form)
 
-#@mod_view.route('/settings/', methods=['GET', 'POST'])
-#def settings():
-#	forbiddenNotAdmin()
-#
-#	settings = getSettings()
-#	form = SettingsForm(request.form, obj=settings)
-#	
-#	if form.validate_on_submit():
-#		updateSettings(Settings(form.price.data))
-#		
-#	return render_template("search.html", form=form)
+@mod_view.route('/settings/', methods=['GET', 'POST'])
+def settings():
+	forbiddenNotAdmin()
+	
+	form = SettingsForm(request.form)
+	
+	if form.validate_on_submit():
+		updateSettings(form.price.data)
+		flash(u"Nová cena kávy uložena.")
+	else:	
+		settings = getSettings()
+		form.price.data = settings.price
+	
+		
+	return render_template("settings.html", form=form)

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% set active_page = "settings" %}
+{% block title %}RICE Coffee Agenda - Nastavení{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block main %}
+	 <div class="panel panel-default">
+		<div class="panel-heading">Nastavení systému</div>
+		<div class="panel-body">
+		{% if form.errors %}
+                                <div>
+                                {% for field, error in form.errors.items() %}
+                                        {% for e in error %}
+                                                <p class="alert alert-danger">{{ e }}</p>
+                                        {% endfor %}
+                                {% endfor %}
+                                </div>
+                  {% endif %}
+
+		  {% with messages = get_flashed_messages(with_categories=true) %}
+		  {% if messages %}
+			{% for category, message in messages %}
+				{% if category == "error" %}
+					<p class="alert alert-danger">{{ message }}</p>
+				{% else %}
+					<p class="alert alert-success">{{ message }}</p>
+				{% endif %}
+			{% endfor %}
+		{% endif %}
+		{% endwith %}
+
+		<form class="form-horizontal" method="POST" action="." accept-charset="UTF-8" role="form">
+		  <div class="form-group">
+		    <label for="inputprice" class="col-sm-2 control-label">Cena kávy</label>
+		    <div class="col-sm-3 col-xs-6 col-md-3 col-lg-2">
+			<div class="input-group">
+				{{ form.price(class="form-control", id="inputprice") }}
+				<span class="input-group-addon">Kč</span>
+			</div>
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <div class="col-sm-offset-2 col-sm-10">
+		      <button type="submit" class="btn btn-primary">Uložit</button>
+		    </div>
+		  </div>
+			{{ form.csrf_token }}
+		</form>
+		</div>
+	</div>
+{% endblock %}

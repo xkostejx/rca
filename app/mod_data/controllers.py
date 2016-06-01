@@ -12,6 +12,7 @@ from app import db
 from app.mod_data.models import User
 from app.mod_data.models import Deposit
 from app.mod_data.models import Coffee 
+from app.mod_data.models import Settings 
 
 # Import contants
 from app.mod_data.constants import Constants as c
@@ -84,6 +85,14 @@ def getBalanceStats():
 
         data = db.session.execute(text(c.SQL_BALANCE_STATS))
 	return d2j.fromDB(data)
+
+def getSettings():
+	data = Settings.query.all()
+	return data[0]
+
+def updateSettings(price):
+	db.session.query(Settings).update({"price": price})
+	db.session.commit()
 
 def getUsersDict(surnamefirst=False):
 	if surnamefirst:

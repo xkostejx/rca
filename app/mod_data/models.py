@@ -108,3 +108,15 @@ class Coffee(Base):
 
 	def to_dict(self):
 		return {'id':self.id, 'date': self.date_created.strftime("%d.%m.%Y %H:%M:%S"), 'user_id':self.user_id, 'price':self.price}
+
+class Settings(db.Model):
+
+	__tablename__ = "settings"
+
+	id    = db.Column(db.Integer, primary_key=True)
+	price = db.Column(db.Integer, nullable=False)
+
+	def __init__(self, price):
+
+		self.price = price
+

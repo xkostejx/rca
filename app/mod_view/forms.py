@@ -27,3 +27,7 @@ class DepositForm(Form):
 class ShowPersonForm(Form):
     name     = SelectField('Name', choices=[])
 
+
+class SettingsForm(Form):
+    price   = IntegerField('Price', [NumberRange(min=1, max=100, message=u"Cena kávy musí být v rozmezí %(min)s a %(max)s Kč"),
+                Required(message=u'Musíte vložit cenu kávy')])
