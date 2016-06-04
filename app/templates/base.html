@@ -54,7 +54,7 @@
         <div id="navbar" class="navbar-collapse collapse navbar-right">
 		<p class="navbar-text">
 			<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-			{{session.fullname}}{{ ' | ADMIN' if session.role else '' }}
+			{{session.fullname}}{{ ' | ADMIN' if session.role == 1 else '' }}
 		</p>	
 
         </div>

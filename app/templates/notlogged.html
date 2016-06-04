@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% set active_page = "personal" %}
+{% block title %}RICE Coffee Agenda - Neznámý uživatel{% endblock %}
+
+{% block main %}
+			<p class="alert alert-danger">Uživatelské jméno <strong>{{ session.username }}</strong>&nbsp;nebylo nalezeno v systému.<br/>Pravděpodobně to znamená, že jste si ještě neuvařil(a) žádnou kávu. Zkuste to tedy napravit;-)</p>
+{% endblock %}

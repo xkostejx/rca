@@ -45,6 +45,10 @@ def beforerequest():
 					session['username'] = username
 					session['fullname'] = user.fullname
 					session['email'] = user.email
+				else:
+					session['role'] = -1
+					session['username'] = username
+					session['fullname'] = u"Neznámý uživatel"	
 	except:
 		abort(503)
 
@@ -57,8 +61,11 @@ def index():
 @mod_view.route('/personal/', methods=['GET', 'POST'])
 def personalstats():
 	userid = session.get('userid')
-	dusersum = json.loads(getUserSummary(userid))
-	return render_template("personal.html", userid=userid, dusersum=dusersum[0])
+	if userid:
+		dusersum = json.loads(getUserSummary(userid))
+		return render_template("personal.html", userid=userid, dusersum=dusersum[0])
+	else:
+		return render_template("notlogged.html")
 
 
 @mod_view.route('/global/', methods=['GET', 'POST'])
