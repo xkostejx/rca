@@ -39,6 +39,7 @@ def beforerequest():
 			if username:
 				user = getUserByUsername(username)
 				if user:
+					session.permanent = True
 					session['userid'] = user.id
 					session['is_logged'] = True
 					session['role'] = user.role
@@ -124,6 +125,5 @@ def settings():
 	else:	
 		settings = getSettings()
 		form.price.data = settings.price
-	
 		
 	return render_template("settings.html", form=form)

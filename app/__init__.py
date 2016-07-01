@@ -2,7 +2,14 @@
 from flask import Flask, render_template, abort
 
 # Import SQLAlchemy
-from flask.ext.sqlalchemy import SQLAlchemy
+#from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
+
+import sys
+if sys.version_info.major < 3:
+    reload(sys)
+sys.setdefaultencoding('utf8')
+
 
 # Define the WSGI application object
 app = Flask(__name__)
@@ -45,3 +52,10 @@ app.register_blueprint(data_module)
 # This will create the database file using SQLAlchemy
 
 #db.create_all()
+
+#import logging
+#from logging.handlers import RotatingFileHandler
+
+#handler = RotatingFileHandler('/tmp/app.log', maxBytes=10000, backupCount=1)
+#handler.setLevel(logging.INFO)
+#app.logger.addHandler(handler)
