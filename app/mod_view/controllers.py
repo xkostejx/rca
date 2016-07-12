@@ -64,7 +64,10 @@ def personalstats():
 	userid = session.get('userid')
 	if userid:
 		dusersum = json.loads(getUserSummary(userid))
-		return render_template("personal.html", userid=userid, dusersum=dusersum[0])
+		if len(dusersum):
+			return render_template("personal.html", userid=userid, dusersum=dusersum[0])
+		else:
+			return render_template("notlogged.html")
 	else:
 		return render_template("notlogged.html")
 
@@ -109,7 +112,10 @@ def search(userid = None):
 		
 		form.name.data = str(userid)
 		dusersummary = getUserSummary(userid, jsonize=False)
-		return render_template("search.html", form=form, dusersum=dusersummary[0], userid=userid)
+		if len(dusersummary):
+			return render_template("search.html", form=form, dusersum=dusersummary[0], userid=userid)
+		else:
+			return render_template("search.html", form=form, nodata=True)
 
 	return render_template("search.html", form=form)
 

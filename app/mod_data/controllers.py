@@ -57,8 +57,8 @@ def getCoffeeByUser(userid):
 @mod_data.route('/coffee/user/sum', methods=['GET', 'POST'])
 def getCoffeeSummary():
 	forbiddenNotAdmin()
-
 	data = db.session.execute(text(c.SQL_COFFEE_SUMMARY))
+	
 	return d2j.fromDB(data)
 
 @mod_data.route('/coffee/user/sum/<int:userid>', methods=['GET', 'POST'])
